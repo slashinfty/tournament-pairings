@@ -1,5 +1,5 @@
 import { Match } from 'Match';
 
-export function DoubleElimination(players: Number | String[], consolation: Boolean = false, ordered: Boolean = false) : Match[] {
+export function SingleElimination(players: Number | String[], consolation: Boolean = false, ordered: Boolean = false) : Match[] {
 
 }
