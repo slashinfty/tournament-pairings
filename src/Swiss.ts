@@ -7,6 +7,6 @@ interface Player {
     rating?: Number | null
 }
 
-export function Swiss(players: Number | String[], rated: Boolean = false) : Match[] {
+export function Swiss(players: Player[], rated: Boolean = false) : Match[] {
 
 }
