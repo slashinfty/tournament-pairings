@@ -1,4 +1,4 @@
-import { Match } from 'Match';
+import { Match } from './Match';
 
 interface Player {
     id: String | Number,
@@ -8,5 +8,7 @@ interface Player {
 }
 
 export function Swiss(players: Player[], rated: Boolean = false) : Match[] {
+    const matches = [];
 
+    return matches;
 }

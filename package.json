@@ -25,12 +25,11 @@
     "author": "Matt Braddock",
     "license": "GPL-3.0-or-later",
     "devDependencies": {
-        "@types/node": "^18.0.6",
         "@types/edmonds-blossom": "^1.0.2",
+        "@types/node": "^18.0.6",
         "typescript": "^4.7.4"
     },
     "dependencies": {
-        "array-shuffle": "^3.0.0",
         "edmonds-blossom": "^1.0.0"
     }
 }
