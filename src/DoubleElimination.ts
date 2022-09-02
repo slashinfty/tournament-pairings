@@ -250,6 +250,39 @@ export function DoubleElimination(players: Number | String[], ordered: Boolean =
             };
         });
     }
-    //line 401
+    let ffwd = 0;
+    for (let i = winRound; i < roundDiff; i++) {
+        let loseMatchesA = matches.filter(m => m.round === loseRound - winRound + ffwd + i);
+        const lostMatchesB = matches.filter(m => m.round === loseRound - winRound + ffwd + i + 1);
+        if (loseMatchesA.length === lostMatchesB.length) {
+            loseMatchesA = lostMatchesB;
+            ffwd++;
+        }
+        const winMatches = matches.filter(m => m.round === i);
+        const fill = fillPattern(winMatches.length, fillCount);
+        fillCount++;
+        loseMatchesA.forEach((m, j) => {
+            const match = winMatches.find(m => m.match === fill[j]);
+            match.lose = {
+                round: m.round,
+                match: m.match
+            };
+        });
+    }
+    for (let i = remainder === 0 ? roundDiff + 1 : roundDiff + 2; i < matches.reduce((max, curr) => Math.max(max, curr.round), 0); i++) {
+        const loseMatchesA = matches.filter(m => m.round === i);
+        const loseMatchesB = matches.filter(m => m.round === i + 1);
+        loseMatchesA.forEach((m, j) => {
+            const match = loseMatchesA.length === loseMatchesB.length ? loseMatchesB[j] : loseMatchesB[Math.floor(j / 2)];
+            m.win = {
+                round: match.round,
+                match: match.match
+            };
+        });
+    }
+    matches.filter(m => m.round === matches.reduce((max, curr) => Math.max(max, curr.round), 0))[0].win = {
+        round: roundDiff,
+        match: 1
+    };
     return matches;
 }
