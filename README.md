@@ -3,6 +3,13 @@ Node.js package containing functions to generate tournament pairings.
 
 If you want a full-fledged package for organizing tournaments, consider [`tournament-organizer`](https://github.com/slashinfty/tournament-organizer).
 
+## Algorithms
+Double elimination: avoids rematches in the loser's bracket by [alternating](https://miro.medium.com/max/1400/1*p9OYmhVdnAAMiHo_OM4PjQ.png) how matches are routed.
+
+Round-robin: players are paired via [Berger tables](https://en.wikipedia.org/wiki/Round-robin_tournament#Berger_tables).
+
+Swiss: generated using a weighted [blossom algorithm](https://brilliant.org/wiki/blossom-algorithm/) with maximum cardinality.
+
 ## Requirements
 This is an ESM module. You will need to use `import` instead of `require` and add `type: "module"` to your `package.json`. See [this](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c) for more information.
 

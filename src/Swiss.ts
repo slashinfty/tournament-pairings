@@ -47,7 +47,7 @@ export function Swiss(players: Player[], round: Number, rated: Boolean = false) 
                 wt += 1.1;
             }
             if (rated) {
-                wt += (1 / 3) * (Math.log2(sorted.length) - Math.log2(sorted.findIndex(p => p === opp) + 1));
+                wt += (1 / 3) * (Math.log2(sorted.length) - Math.log2(sorted.findIndex(p => p.id === opp.id) + 1));
             }
             if ((curr.hasOwnProperty('receivedBye') && curr.receivedBye) || (opp.hasOwnProperty('receivedBye') && opp.receivedBye)) {
                 wt *= 1.25;
