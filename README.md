@@ -1,5 +1,7 @@
 # tournament-pairings
-Functions to generate pairings for tournaments
+Node.js package containing functions to generate tournament pairings.
+
+If you want a full-fledged package for organizing tournaments, consider [`tournament-organizer`](https://github.com/slashinfty/tournament-organizer).
 
 ## Requirements
 This is an ESM module. You will need to use `import` instead of `require` and add `type: "module"` to your `package.json`. See [this](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c) for more information.
