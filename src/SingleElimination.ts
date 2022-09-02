@@ -5,11 +5,7 @@ export function SingleElimination(players: Number | String[], consolation: Boole
     const matches = [];
     let playerArray = [];
     if (Array.isArray(players)) {
-        if (!ordered) {
-            playerArray = shuffle(players);
-        } else {
-            playerArray = players;
-        }
+        playerArray = ordered ? players : shuffle(players);
     } else {
         playerArray = [...new Array(players)].map((_, i) => i + 1);
     }
