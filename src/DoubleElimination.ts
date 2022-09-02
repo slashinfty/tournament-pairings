@@ -160,9 +160,96 @@ export function DoubleElimination(players: Number | String[], ordered: Boolean =
         winRound++;
         loseRound++;
     } else if (remainder <= 2 ** Math.floor(exponent) / 2) {
-
+        let winMatches = matches.filter(m => m.round === winRound);
+        let fill = fillPattern(winMatches.length, fillCount);
+        fillCount++;
+        matches.filter(m => m.round === loseRound).forEach((m, i) => {
+            const match = winMatches.find(m => m.match === fill[i]);
+            match.lose = {
+                round = m.round,
+                match = m.match
+            };
+        });
+        winRound++;
+        loseRound++;
+        winMatches = matches.filter(m => m.round === winRound);
+        fill = fillPattern(winMatches.length, fillCount);
+        fillCount++;
+        let countA = 0;
+        let countB = 0;
+        let routeNumbers = matches.filter(m => m.round === 2 && (m.player1 === null || m.player2 === null)).map(m => Math.ceil(m.match / 2));
+        let routeCopy = [...routeNumbers];
+        matches.filter(m => m.round === loseRound).forEach(m => {
+            for (let i = 0; i < 2; i++) {
+                const match = winMatches.find(m => m.match === fill[countA]);
+                if (routeCopy.some(n => n === m.match)) {
+                    const lossMatch = matches.filter(x => x.round === loseRound - 1)[countB];
+                    countB++;
+                    match.lose = {
+                        round: lossMatch.round,
+                        match: lossMatch.match
+                    };
+                    routeCopy.splice(routeCopy.indexOf(m.match), 1);
+                } else {
+                    match.lose = {
+                        round: m.round,
+                        match: m.match
+                    };
+                }
+                countA++;
+            }
+        });
+        winRound++;
+        loseRound++;
+        matches.filter(m => m.round === roundDiff + 1).forEach((m, i) => {
+            const match = matches.find(x => x.round === m.round + 1 && x.match === routeNumbers[i]);
+            m.win = {
+                round: match.round,
+                match: match.match
+            };
+        });
     } else {
-
+        const winMatches = matches.filter(m => m.round === winRound);
+        const loseMatchesA = matches.filter(m => m.round === loseRound);
+        loseRound++;
+        const loseMatchesB = matches.filter(m => m.round === loseRound);
+        const fill = fillPattern(winMatches.length, fillCount);
+        fillCount++;
+        let countA = 0;
+        let countB = 0;
+        let routeNumbers = matches.filter(m => m.round === 2 && (m.player1 === null || m.player2 === null)).map(m => m.match);
+        loseMatchesB.forEach(m => {
+            const winMatchA = winMatches.find(x => x.match === fill[countA]);
+            if (routeNumbers.some(n => n === m.match)) {
+                const lossMatch = loseMatchesA[countB];
+                winMatchA.lose = {
+                    round: lossMatch.round,
+                    match: lossMatch.match
+                };
+                countA++;
+                countB++;
+                const winMatchB = winMatches.find(x => x.match === fill[countA]);
+                winMatchB.lose = {
+                    round: lossMatch.round,
+                    match: lossMatch.match
+                };
+            } else {
+                winMatchA.lose = {
+                    round: m.round,
+                    match: m.match
+                }
+            }
+            countA++;
+        });
+        winRound++;
+        matches.filter(m => m.round === roundDiff + 1).forEach((m, i) => {
+            const match = matches.find(x => x.round === m.round + 1 && x.match === routeNumbers[i]);
+            m.win = {
+                round: match.round,
+                match: match.match
+            };
+        });
     }
+    //line 401
     return matches;
 }
