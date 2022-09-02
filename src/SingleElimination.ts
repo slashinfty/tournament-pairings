@@ -64,7 +64,7 @@ export function SingleElimination(players: Number | String[], consolation: Boole
         matches.filter(m => m.round === 1).forEach((m, i) => {
             m.player1 = playerArray[2 ** Math.floor(exponent) + i];
             const p2 = playerArray[2 ** Math.floor(exponent) - i - 1];
-            const nextMatch = matches.filter(n => n.round === 2).find(n => (n.player1 !== null && n.player1 === p2) || (n.player2 !== null && n.player2 === p2));
+            const nextMatch = matches.filter(n => n.round === 2).find(n => n.player1 === p2 || n.player2 === p2);
             if (nextMatch.player1 === p2) {
                 nextMatch.player1 = null;
             } else {
