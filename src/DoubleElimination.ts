@@ -135,8 +135,8 @@ export function DoubleElimination(players: Number | String[], ordered: Boolean =
     const fillPattern = (matchCount, fillCount) => {
         const a = [...new Array(matchCount)].map((_, i) => i + 1);
         const c = fillCount % 4;
-        const x = arr.slice(0, a.length / 2);
-        const y = arr.slice(a.length / 2);
+        const x = a.slice(0, a.length / 2);
+        const y = a.slice(a.length / 2);
         return c === 0 ? a : c === 1 ? a.reverse() : c === 2 ? x.reverse().concat(y.reverse()) : y.concat(x);
     }
     let fillCount = 0;
@@ -151,8 +151,8 @@ export function DoubleElimination(players: Number | String[], ordered: Boolean =
             for (let i = 0; i < 2; i++) {
                 const match = winMatches.find(m => m.match === fill[counter]);
                 match.lose = {
-                    round = m.round,
-                    match = m.match
+                    round: m.round,
+                    match: m.match
                 }
                 counter++;
             }
@@ -166,8 +166,8 @@ export function DoubleElimination(players: Number | String[], ordered: Boolean =
         matches.filter(m => m.round === loseRound).forEach((m, i) => {
             const match = winMatches.find(m => m.match === fill[i]);
             match.lose = {
-                round = m.round,
-                match = m.match
+                round: m.round,
+                match: m.match
             };
         });
         winRound++;

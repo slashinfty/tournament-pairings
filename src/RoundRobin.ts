@@ -45,7 +45,7 @@ export function RoundRobin(players: Number | String[], ordered: Boolean = false)
                         curr.player2 = playerArray[indexFind(playerArray.findIndex(p => p === prev.player1))];
                     } else {
                         curr.player2 = playerArray[playerArray.length - 1];
-                        curr.player1 = playerArray[indexFind(playerArray.findIndex(p => p === prev.player1))];
+                        curr.player1 = playerArray[indexFind(playerArray.findIndex(p => p === prev.player2))];
                     }
                 } else {
                     curr.player1 = playerArray[indexFind(playerArray.findIndex(p => p === prev.player1))];

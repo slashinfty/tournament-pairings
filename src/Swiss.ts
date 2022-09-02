@@ -10,7 +10,7 @@ interface Player {
     rating?: Number | null
 }
 
-export function Swiss(players: Player[], rated: Boolean = false) : Match[] {
+export function Swiss(players: Player[], round: Number, rated: Boolean = false) : Match[] {
     const matches = [];
     let playerArray = [];
     if (Array.isArray(players)) {
@@ -37,7 +37,7 @@ export function Swiss(players: Player[], rated: Boolean = false) : Match[] {
         const sorted = rated ? [...next].sort((a, b) => Math.abs(curr.rating - a.rating) - Math.abs(curr.rating - b.rating)) : [];
         for (let j = 0; j < next.length; j++) {
             const opp = next[j];
-            if (curr.hasOwnProperty('avoid') && curr.avoid.includes(opp)) {
+            if (curr.hasOwnProperty('avoid') && curr.avoid.includes(opp.id)) {
                 continue;
             }
             let wt = 12 * Math.log10(scoreSums.findIndex(s => s === curr.score + opp.score) + 1);
@@ -60,7 +60,29 @@ export function Swiss(players: Player[], rated: Boolean = false) : Match[] {
     let byeArray = [];
     let match = 1;
     do {
-        // line 526
+        const indexA = playerCopy[0].index;
+        const indexB = blossomPairs[indexA];
+        if (indexB === -1) {
+            byeArray.push(playerCopy.splice(0, 1)[0]);
+            continue;
+        }
+        playerCopy.splice(0, 1);
+        playerCopy.splice(playerCopy.findIndex(p => p.index === indexB), 1);
+        matches.push({
+            round: round,
+            match: match++,
+            player1: playerArray.find(p => p.index === indexA).id,
+            player2: playerArray.find(p => p.index === indexB).id
+        });
     } while (playerCopy.length > blossomPairs.reduce((sum, idx) => idx === -1 ? sum + 1 : sum, 0));
+    byeArray = [...byeArray, ...playerCopy];
+    for (let i = 0; i < byeArray.length; i++) {
+        matches.push({
+            round: round,
+            match: match++,
+            player1: byeArray[i].id,
+            player2: null
+        })
+    }
     return matches;
 }
