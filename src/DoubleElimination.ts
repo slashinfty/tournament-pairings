@@ -133,7 +133,7 @@ export function DoubleElimination(players: Number | String[], ordered: Boolean =
         loserExponent--;
     } while (loserExponent > -1);
     const fillPattern = (matchCount, fillCount) => {
-        const a = Array.from({length: matchCount}, (_, i) => i + 1);
+        const a = [...new Array(matchCount)].map((_, i) => i + 1);
         const c = fillCount % 4;
         const x = arr.slice(0, a.length / 2);
         const y = arr.slice(a.length / 2);
@@ -160,7 +160,7 @@ export function DoubleElimination(players: Number | String[], ordered: Boolean =
         winRound++;
         loseRound++;
     } else if (remainder <= 2 ** Math.floor(exponent) / 2) {
-        
+
     } else {
 
     }
