@@ -43,8 +43,8 @@ import {
 {
     id: String | Number, // unique identifier
     score: Number, // current score
-    avoid?: String[] | Number[], // array of IDs the player can not be paired with
-    rating?: Number | null // rating of the player
+    avoid?: String[] | Number[], // array of IDs the player can not be paired with (optional)
+    rating?: Number | null // rating of the player (optional)
 }
 ```
 - `rated` (optional): a boolean to indicate if the players have a rating that should be considered when pairing (default: false)
@@ -58,6 +58,7 @@ Each function returns an array of matches. Matches are objects with the followin
     match: Number,
     player1: String | Number | null,
     player2: String | Number | null,
+    // the following objects are only present in elimination pairings
     win?: {
         round: Number,
         match: Number
