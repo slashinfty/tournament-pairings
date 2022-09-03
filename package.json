@@ -1,6 +1,6 @@
 {
     "name": "tournament-pairings",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "Functions to generate pairings for tournaments ",
     "main": "./dist/index.js",
     "files": [
@@ -13,7 +13,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/slashinfty/chess-pairings.git"
+        "url": "git+https://github.com/slashinfty/tournament-pairings.git"
     },
     "keywords": [
         "elimination",
