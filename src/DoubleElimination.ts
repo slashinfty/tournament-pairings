@@ -217,7 +217,7 @@ export function DoubleElimination(players: Number | String[], ordered: Boolean =
         fillCount++;
         let countA = 0;
         let countB = 0;
-        let routeNumbers = matches.filter(m => m.round === 2 && (m.player1 === null || m.player2 === null)).map(m => m.match);
+        let routeNumbers = matches.filter(m => m.round === 2 && m.player1 === null && m.player2 === null).map(m => m.match);
         loseMatchesB.forEach(m => {
             const winMatchA = winMatches.find(x => x.match === fill[countA]);
             if (routeNumbers.some(n => n === m.match)) {

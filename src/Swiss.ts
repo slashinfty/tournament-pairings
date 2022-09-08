@@ -1,5 +1,6 @@
 import blossom from 'edmonds-blossom';
 import { Match } from './Match';
+import { shuffle } from './Shuffle.js';
 
 interface Player {
     id: String | Number,
@@ -21,6 +22,7 @@ export function Swiss(players: Player[], round: Number, rated: Boolean = false) 
     if (rated) {
         playerArray.filter(p => !p.hasOwnProperty('rating') || p.rating === null).forEach(p => p.rating = 0);
     }
+    playerArray = shuffle(playerArray);
     playerArray.forEach((p, i) => p.index = i);
     const scoreGroups = [...new Set(playerArray.map(p => p.score))].sort((a, b) => a - b);
     const scoreSums = [...new Set(scoreGroups.map((s, i, a) => {
