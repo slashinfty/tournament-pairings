@@ -1,7 +1,7 @@
 import { Match } from './Match';
 import { shuffle } from './Shuffle.js';
 
-export function DoubleElimination(players: Number | String[], ordered: Boolean = false) : Match[] {
+export function DoubleElimination(players: number | string[], startingRound: number = 1, ordered: boolean = false) : Match[] {
     const matches = [];
     let playerArray = [];
     if (Array.isArray(players)) {
@@ -17,7 +17,7 @@ export function DoubleElimination(players: Number | String[], ordered: Boolean =
             bracket.splice(j + 1, 0, 2 ** i + 1 - bracket[j]);
         }
     }
-    let round = 1;
+    let round = startingRound;
     if (remainder !== 0) {
         for (let i = 0; i < remainder; i++) {
             matches.push({
@@ -50,17 +50,17 @@ export function DoubleElimination(players: Number | String[], ordered: Boolean =
         }
         round++;
         matchExponent--;
-    } while (round < Math.ceil(exponent) + 1);
-    const startRound = remainder === 0 ? 1 : 2;
+    } while (round < startingRound + Math.ceil(exponent) + 1);
+    const startRound = startingRound + (remainder === 0 ? 0 : 1);
     matches.filter(m => m.round === startRound).forEach((m, i) => {
         m.player1 = playerArray[bracket[2 * i] - 1];
         m.player2 = playerArray[bracket[2 * i + 1] - 1];
     });
     if (remainder !== 0) {
-        matches.filter(m => m.round === 1).forEach((m, i) => {
+        matches.filter(m => m.round === startingRound).forEach((m, i) => {
             m.player1 = playerArray[2 ** Math.floor(exponent) + i];
             const p2 = playerArray[2 ** Math.floor(exponent) - i - 1];
-            const nextMatch = matches.filter(n => n.round === 2).find(n => n.player1 === p2 || n.player2 === p2);
+            const nextMatch = matches.filter(n => n.round === startingRound + 1).find(n => n.player1 === p2 || n.player2 === p2);
             if (nextMatch.player1 === p2) {
                 nextMatch.player1 = null;
             } else {
@@ -140,7 +140,7 @@ export function DoubleElimination(players: Number | String[], ordered: Boolean =
         return c === 0 ? a : c === 1 ? a.reverse() : c === 2 ? x.reverse().concat(y.reverse()) : y.concat(x);
     }
     let fillCount = 0;
-    let winRound = 1;
+    let winRound = startingRound;
     let loseRound = roundDiff + 1;
     if (remainder === 0) {
         const winMatches = matches.filter(m => m.round === winRound);

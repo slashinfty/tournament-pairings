@@ -1,7 +1,7 @@
 import { Match } from './Match';
 import { shuffle } from './Shuffle.js';
 
-export function RoundRobin(players: Number | String[], ordered: Boolean = false) : Match[] {
+export function RoundRobin(players: number | string[], startingRound: number = 1, ordered: boolean = false) : Match[] {
     let matches = [];
     let playerArray = [];
     if (Array.isArray(players)) {
@@ -12,7 +12,7 @@ export function RoundRobin(players: Number | String[], ordered: Boolean = false)
     if (playerArray.length % 2 === 1) {
         playerArray.push(null);
     }
-    for (let r = 1; r < playerArray.length; r++) {
+    for (let r = startingRound; r < startingRound + playerArray.length; r++) {
         let round = [];
         for (let i = 0; i < playerArray.length / 2; i++) {
             round.push({
@@ -22,7 +22,7 @@ export function RoundRobin(players: Number | String[], ordered: Boolean = false)
                 player2: null
             });
         }
-        if (r === 1) {
+        if (r === startingRound) {
             round.forEach((m, i) => {
                 m.player1 = playerArray[i];
                 m.player2 = playerArray[playerArray.length - i - 1];
