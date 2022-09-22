@@ -96,7 +96,7 @@ Creating a generic single elimination bracket for 8 players with a third place m
 ```js
 import { SingleElimination } from 'tournament-pairings';
 
-const elimBracket = SingleElimination(8, true);
+const elimBracket = SingleElimination(8, 1, true);
 
 console.log(elimBracket);
 /*
