@@ -1,14 +1,14 @@
 export interface Match {
-    round: Number,
-    match: Number,
-    player1: String | Number | null,
-    player2: String | Number | null,
+    round: number,
+    match: number,
+    player1: string | number | null,
+    player2: string | number | null,
     win?: {
-        round: Number,
-        match: Number
+        round: number,
+        match: number
     },
     loss?: {
-        round: Number,
-        match: Number
+        round: number,
+        match: number
     }
 }
