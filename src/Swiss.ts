@@ -3,15 +3,15 @@ import { Match } from './Match';
 import { shuffle } from './Shuffle.js';
 
 interface Player {
-    id: String | Number,
-    score: Number,
-    pairedUpDown?: Boolean,
-    receivedBye? : Boolean,
-    avoid?: (String | Number)[],
-    rating?: Number | null
+    id: string | number,
+    score: number,
+    pairedUpDown?: boolean,
+    receivedBye? : boolean,
+    avoid?: (string | number)[],
+    rating?: number | null
 }
 
-export function Swiss(players: Player[], round: Number, rated: Boolean = false) : Match[] {
+export function Swiss(players: Player[], round: number, rated: boolean = false) : Match[] {
     const matches = [];
     let playerArray = [];
     if (Array.isArray(players)) {

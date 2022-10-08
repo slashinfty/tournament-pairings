@@ -136,7 +136,7 @@ Expected output:
     player1: null,
     player2: null,
     win: { round: 3, match: 1 },
-    lose: { round: 3, match: 2 }
+    loss: { round: 3, match: 2 }
   },
   {
     round: 2,
@@ -144,7 +144,7 @@ Expected output:
     player1: null,
     player2: null,
     win: { round: 3, match: 1 },
-    lose: { round: 3, match: 2 }
+    loss: { round: 3, match: 2 }
   },
   { round: 3, match: 1, player1: null, player2: null },
   { round: 3, match: 2, player1: null, player2: null }

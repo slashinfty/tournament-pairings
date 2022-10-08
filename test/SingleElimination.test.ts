@@ -3,7 +3,7 @@ import { SingleElimination } from '../src/SingleElimination';
 
 describe('Single Elimination', () => {
     it('8 players with consolation', () => {
-        expect(SingleElimination(8, true)).to.include.deep.members([
+        expect(SingleElimination(8, 1, true)).to.include.deep.members([
             {
                 round: 1,
                 match: 1,
@@ -38,7 +38,7 @@ describe('Single Elimination', () => {
                 player1: null,
                 player2: null,
                 win: { round: 3, match: 1 },
-                lose: { round: 3, match: 2 }
+                loss: { round: 3, match: 2 }
             },
             {
                 round: 2,
@@ -46,7 +46,7 @@ describe('Single Elimination', () => {
                 player1: null,
                 player2: null,
                 win: { round: 3, match: 1 },
-                lose: { round: 3, match: 2 }
+                loss: { round: 3, match: 2 }
             },
             { round: 3, match: 1, player1: null, player2: null },
             { round: 3, match: 2, player1: null, player2: null }
@@ -54,7 +54,7 @@ describe('Single Elimination', () => {
     });
 
     it('8 ordered players', () => {
-        expect(SingleElimination(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'], false, true)).to.include.deep.members([
+        expect(SingleElimination(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'], 1, false, true)).to.include.deep.members([
             {
                 round: 1,
                 match: 1,

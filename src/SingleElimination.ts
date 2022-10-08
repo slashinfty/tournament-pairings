@@ -50,7 +50,7 @@ export function SingleElimination(players: number | string[], startingRound: num
         }
         round++;
         matchExponent--;
-    } while (round < startingRound + Math.ceil(exponent) + 1);
+    } while (round < startingRound + Math.ceil(exponent));
     const startRound = startingRound + (remainder === 0 ? 0 : 1);
     matches.filter(m => m.round === startRound).forEach((m, i) => {
         m.player1 = playerArray[bracket[2 * i] - 1];
@@ -68,7 +68,7 @@ export function SingleElimination(players: number | string[], startingRound: num
             }
             m.player2 = p2;
             m.win = {
-                round: 2,
+                round: startingRound + 1,
                 match: nextMatch.match
             };
         });
@@ -82,7 +82,7 @@ export function SingleElimination(players: number | string[], startingRound: num
             player1: null,
             player2: null
         });
-        matches.filter(m => m.round === lastRound - 1).forEach(m => m.lose = {
+        matches.filter(m => m.round === lastRound - 1).forEach(m => m.loss = {
             round: lastRound,
             match: lastMatch + 1
         });

@@ -3,7 +3,7 @@ import { RoundRobin } from '../src/RoundRobin';
 
 describe('Round-Robin', () => {
     it('4 ordered players', () => {
-        expect(RoundRobin(['A', 'B', 'C', 'D'], true)).to.include.deep.members([
+        expect(RoundRobin(['A', 'B', 'C', 'D'], 1, true)).to.include.deep.members([
             { round: 1, match: 1, player1: 'A', player2: 'D' },
             { round: 1, match: 2, player1: 'B', player2: 'C' },
             { round: 2, match: 1, player1: 'D', player2: 'C' },

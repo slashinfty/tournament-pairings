@@ -50,7 +50,7 @@ export function DoubleElimination(players: number | string[], startingRound: num
         }
         round++;
         matchExponent--;
-    } while (round < startingRound + Math.ceil(exponent) + 1);
+    } while (round < startingRound + Math.ceil(exponent));
     const startRound = startingRound + (remainder === 0 ? 0 : 1);
     matches.filter(m => m.round === startRound).forEach((m, i) => {
         m.player1 = playerArray[bracket[2 * i] - 1];
@@ -68,7 +68,7 @@ export function DoubleElimination(players: number | string[], startingRound: num
             }
             m.player2 = p2;
             m.win = {
-                round: 2,
+                round: startingRound + 1,
                 match: nextMatch.match
             };
         });
@@ -150,7 +150,7 @@ export function DoubleElimination(players: number | string[], startingRound: num
         matches.filter(m => m.round === loseRound).forEach(m => {
             for (let i = 0; i < 2; i++) {
                 const match = winMatches.find(m => m.match === fill[counter]);
-                match.lose = {
+                match.loss = {
                     round: m.round,
                     match: m.match
                 }
@@ -165,7 +165,7 @@ export function DoubleElimination(players: number | string[], startingRound: num
         fillCount++;
         matches.filter(m => m.round === loseRound).forEach((m, i) => {
             const match = winMatches.find(m => m.match === fill[i]);
-            match.lose = {
+            match.loss = {
                 round: m.round,
                 match: m.match
             };
@@ -185,13 +185,13 @@ export function DoubleElimination(players: number | string[], startingRound: num
                 if (routeCopy.some(n => n === m.match)) {
                     const lossMatch = matches.filter(x => x.round === loseRound - 1)[countB];
                     countB++;
-                    match.lose = {
+                    match.loss = {
                         round: lossMatch.round,
                         match: lossMatch.match
                     };
                     routeCopy.splice(routeCopy.indexOf(m.match), 1);
                 } else {
-                    match.lose = {
+                    match.loss = {
                         round: m.round,
                         match: m.match
                     };
@@ -222,19 +222,19 @@ export function DoubleElimination(players: number | string[], startingRound: num
             const winMatchA = winMatches.find(x => x.match === fill[countA]);
             if (routeNumbers.some(n => n === m.match)) {
                 const lossMatch = loseMatchesA[countB];
-                winMatchA.lose = {
+                winMatchA.loss = {
                     round: lossMatch.round,
                     match: lossMatch.match
                 };
                 countA++;
                 countB++;
                 const winMatchB = winMatches.find(x => x.match === fill[countA]);
-                winMatchB.lose = {
+                winMatchB.loss = {
                     round: lossMatch.round,
                     match: lossMatch.match
                 };
             } else {
-                winMatchA.lose = {
+                winMatchA.loss = {
                     round: m.round,
                     match: m.match
                 }
@@ -263,7 +263,7 @@ export function DoubleElimination(players: number | string[], startingRound: num
         fillCount++;
         loseMatchesA.forEach((m, j) => {
             const match = winMatches.find(m => m.match === fill[j]);
-            match.lose = {
+            match.loss = {
                 round: m.round,
                 match: m.match
             };
