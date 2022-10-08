@@ -47,7 +47,7 @@ import * as Pairings from 'tournament-pairings';
 - `consolation` (optional): a boolean to determine if a third place match should be created (default: false)
 - `ordered` (optional): a boolean to indicate if the array provided for `players` is ordered (default: false)
 
-`DoubleElimination()` and `RoundRobin()` have two parameters:
+`DoubleElimination()` and `RoundRobin()` have three parameters:
 
 - `players`: either a number of players or an array of unique strings or numbers representing players
 - `startingRound` (optional): an integer indicating the starting round (default: 1)
