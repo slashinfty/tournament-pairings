@@ -28,6 +28,7 @@ import {
     SingleElimination,
     DoubleElimination,
     RoundRobin,
+    Stepladder,
     Swiss
 } from 'tournament-pairings';
 ```
@@ -52,6 +53,12 @@ import * as Pairings from 'tournament-pairings';
 - `players`: either a number of players or an array of unique strings or numbers representing players
 - `startingRound` (optional): an integer indicating the starting round (default: 1)
 - `ordered` (optional): a boolean to indicate if the array provided for `players` is ordered (default: false)
+
+`Stepladder()` has three parameters:
+
+- `players`: either a number of players or an array of unique strings or numbers representing players
+- `startingRound` (optional): an integer indicating the starting round (default: 1)
+- `ordered` (optional): a boolean to indicate if the array provided for `players` is ordered (default: true)
 
 `Swiss()` has three parameters:
 
