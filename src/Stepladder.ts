@@ -11,7 +11,7 @@ export function Stepladder(players: number | string[], startingRound: number = 1
     }
     const rounds = playerArray.length - 1;
     for (let i = startingRound; i < startingRound + rounds; i++) {
-        const match = {
+        const match: Match = {
             round: i,
             match: 1,
             player1: playerArray[playerArray.length - (i - startingRound) - 2],
