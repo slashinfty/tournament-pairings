@@ -41,7 +41,7 @@ import * as Pairings from 'tournament-pairings';
 
 ### Parameters
 
-`SingleElimination()` has four parameters:
+`SingleElimination()` has five parameters:
 
 - `players`: either a number of players or an array of unique strings or numbers representing players
 - `startingRound` (optional): an integer indicating the starting round (default: 1)
