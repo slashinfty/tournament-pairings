@@ -1,4 +1,4 @@
-import { Match } from './Match';
+import { Match } from './Match.js';
 import { shuffle } from './Shuffle.js';
 
 export function RoundRobin(players: number | string[], startingRound: number = 1, ordered: boolean = false) : Match[] {

@@ -1,5 +1,5 @@
 import blossom from 'edmonds-blossom';
-import { Match } from './Match';
+import { Match } from './Match.js';
 import { shuffle } from './Shuffle.js';
 
 interface Player {
