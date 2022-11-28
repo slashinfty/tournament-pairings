@@ -21,7 +21,7 @@ npm i tournament-pairings
 ## Documentation
 
 ### Imports
-There are 4 named exports you can import into your project.
+There are 5 named exports you can import into your project.
 
 ```js
 import {

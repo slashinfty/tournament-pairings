@@ -42,17 +42,17 @@ export function Swiss(players: Player[], round: number, rated: boolean = false) 
             if (curr.hasOwnProperty('avoid') && curr.avoid.includes(opp.id)) {
                 continue;
             }
-            let wt = 12 * Math.log10(scoreSums.findIndex(s => s === curr.score + opp.score) + 1);
+            let wt = 14 * Math.log10(scoreSums.findIndex(s => s === curr.score + opp.score) + 1);
             const scoreGroupDiff = Math.abs(scoreGroups.findIndex(s => s === curr.score) - scoreGroups.findIndex(s => s === opp.score));
             wt += scoreGroupDiff < 2 ? 5 / (2 * Math.log10(scoreGroupDiff + 2)) : 1 / Math.log10(scoreGroupDiff + 2);
             if (scoreGroupDiff === 1 && curr.hasOwnProperty('pairedUpDown') && curr.pairedUpDown === false && opp.hasOwnProperty('pairedUpDown') && opp.pairedUpDown === false) {
-                wt += 1.1;
+                wt += 1.2;
             }
             if (rated) {
                 wt += (1 / 3) * (Math.log2(sorted.length) - Math.log2(sorted.findIndex(p => p.id === opp.id) + 1));
             }
             if ((curr.hasOwnProperty('receivedBye') && curr.receivedBye) || (opp.hasOwnProperty('receivedBye') && opp.receivedBye)) {
-                wt *= 1.25;
+                wt *= 1.5;
             }
             pairs.push([curr.index, opp.index, wt]);
         }
