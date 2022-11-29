@@ -11,7 +11,7 @@ export function SingleElimination(players: number | string[], startingRound: num
     }
     const exponent = Math.log2(playerArray.length);
     const remainder = Math.round(2 ** exponent) % (2 ** Math.floor(exponent));
-    const bracket = [1, 4, 2, 3];
+    const bracket = exponent < 2 ? [1, 2] : [1, 4, 2, 3];
     for (let i = 3; i <= Math.floor(exponent); i++) {
         for (let j = 0; j < bracket.length; j += 2) {
             bracket.splice(j + 1, 0, 2 ** i + 1 - bracket[j]);
