@@ -1,6 +1,6 @@
 {
     "name": "tournament-pairings",
-    "version": "1.4.3",
+    "version": "1.4.4",
     "description": "Functions to generate pairings for tournaments ",
     "main": "./dist/index.js",
     "files": [

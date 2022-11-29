@@ -12,7 +12,7 @@ export function RoundRobin(players: number | string[], startingRound: number = 1
     if (playerArray.length % 2 === 1) {
         playerArray.push(null);
     }
-    for (let r = startingRound; r < startingRound + playerArray.length; r++) {
+    for (let r = startingRound; r < startingRound + playerArray.length - 1; r++) {
         let round = [];
         for (let i = 0; i < playerArray.length / 2; i++) {
             round.push({
