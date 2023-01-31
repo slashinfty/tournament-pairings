@@ -41,7 +41,7 @@ import * as Pairings from 'tournament-pairings';
 
 ### Parameters
 
-`SingleElimination()` has five parameters:
+`SingleElimination()` has four parameters:
 
 - `players`: either a number of players or an array of unique strings or numbers representing players
 - `startingRound` (optional): an integer indicating the starting round (default: 1)
@@ -60,7 +60,7 @@ import * as Pairings from 'tournament-pairings';
 - `startingRound` (optional): an integer indicating the starting round (default: 1)
 - `ordered` (optional): a boolean to indicate if the array provided for `players` is ordered (default: true)
 
-`Swiss()` has three parameters:
+`Swiss()` has four parameters:
 
 - `players`: an array of objects with the following structure
 ```ts
@@ -69,12 +69,14 @@ import * as Pairings from 'tournament-pairings';
     score: Number, // current score
     pairedUpDown?: Boolean, // if the player has been paired up/down prior (optional)
     receivedBye? : Boolean, // if the player has received a bye prior (optional)
-    avoid?: String[] | Number[], // array of IDs the player can not be paired with (optional)
+    avoid?: Array<String | Number>, // array of IDs the player can not be paired with (optional)
+    colors?: Array<'w' | 'b'>, // array of colors player has been assigned, where 'w' is white and 'b' is black (used for chess) (optional)
     rating?: Number | null // rating of the player (optional)
 }
 ```
 - `round`: the round number
 - `rated` (optional): a boolean to indicate if the players have a rating that should be considered when pairing (default: false)
+- `colors` (optional): a boolean to indicate if the players have had colors assigned to them, such as in chess (default: false)
 
 ### Returns
 Each function returns an array of matches. Matches are objects with the following structure:
@@ -96,6 +98,8 @@ Each function returns an array of matches. Matches are objects with the followin
     }
 }
 ```
+For Swiss pairings, if `colors = true`, then `player1` would be white and `player2` would be black.
+
 The Swiss function returns matches for one round, while single/double elimination and round-robin functions return all matches for the tournament.
 
 ## Examples

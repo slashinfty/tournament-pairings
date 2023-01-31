@@ -7,11 +7,12 @@ interface Player {
     score: number,
     pairedUpDown?: boolean,
     receivedBye? : boolean,
-    avoid?: (string | number)[],
+    avoid?: Array<string | number>,
+    colors?: Array<'w' | 'b'>,
     rating?: number | null
 }
 
-export function Swiss(players: Player[], round: number, rated: boolean = false) : Match[] {
+export function Swiss(players: Player[], round: number, rated: boolean = false, colors: boolean = false) : Match[] {
     const matches = [];
     let playerArray = [];
     if (Array.isArray(players)) {
@@ -21,6 +22,9 @@ export function Swiss(players: Player[], round: number, rated: boolean = false) 
     }
     if (rated) {
         playerArray.filter(p => !p.hasOwnProperty('rating') || p.rating === null).forEach(p => p.rating = 0);
+    }
+    if (colors) {
+        playerArray.filter(p => !p.hasOwnProperty('colors')).forEach(p => p.colors = []);
     }
     playerArray = shuffle(playerArray);
     playerArray.forEach((p, i) => p.index = i);
@@ -44,12 +48,35 @@ export function Swiss(players: Player[], round: number, rated: boolean = false) 
             }
             let wt = 14 * Math.log10(scoreSums.findIndex(s => s === curr.score + opp.score) + 1);
             const scoreGroupDiff = Math.abs(scoreGroups.findIndex(s => s === curr.score) - scoreGroups.findIndex(s => s === opp.score));
-            wt += scoreGroupDiff < 2 ? 5 / (2 * Math.log10(scoreGroupDiff + 2)) : 1 / Math.log10(scoreGroupDiff + 2);
+            wt += scoreGroupDiff < 2 ? 3 / Math.log10(scoreGroupDiff + 2) : 1 / Math.log10(scoreGroupDiff + 2);
             if (scoreGroupDiff === 1 && curr.hasOwnProperty('pairedUpDown') && curr.pairedUpDown === false && opp.hasOwnProperty('pairedUpDown') && opp.pairedUpDown === false) {
                 wt += 1.2;
             }
             if (rated) {
-                wt += (1 / 3) * (Math.log2(sorted.length) - Math.log2(sorted.findIndex(p => p.id === opp.id) + 1));
+                wt += (Math.log2(sorted.length) - Math.log2(sorted.findIndex(p => p.id === opp.id) + 1)) / 3;
+            }
+            if (colors) {
+                const colorScore = curr.colors.reduce((sum, color) => color === 'w' ? sum + 1 : sum - 1, 0);
+                const oppScore = opp.colors.reduce((sum, color) => color === 'w' ? sum + 1 : sum - 1, 0);
+                if (curr.colors.length > 1 && curr.colors.slice(-2).join('') === 'ww') {
+                     if (opp.colors.slice(-2).join('') === 'ww') {
+                        continue;
+                     } else if (opp.colors.slice(-2).join('') === 'bb') {
+                        wt += 7;
+                     } else {
+                        wt += 2 / Math.log(4 - Math.abs(oppScore));
+                     }
+                } else if (curr.colors.length > 1 && curr.colors.slice(-2).join('') === 'bb') {
+                    if (opp.colors.slice(-2).join('') === 'bb') {
+                        continue;
+                     } else if (opp.colors.slice(-2).join('') === 'ww') {
+                        wt += 8;
+                     } else {
+                        wt += 2 / Math.log(4 - Math.abs(oppScore));
+                     } 
+                } else {
+                    wt += 5 / (4 * Math.log10(6 - Math.abs(colorScore - oppScore)));
+                }
             }
             if ((curr.hasOwnProperty('receivedBye') && curr.receivedBye) || (opp.hasOwnProperty('receivedBye') && opp.receivedBye)) {
                 wt *= 1.5;
@@ -70,11 +97,25 @@ export function Swiss(players: Player[], round: number, rated: boolean = false) 
         }
         playerCopy.splice(0, 1);
         playerCopy.splice(playerCopy.findIndex(p => p.index === indexB), 1);
+        let playerA = playerArray.find(p => p.index === indexA);
+        let playerB = playerArray.find(p => p.index === indexB);
+        if (colors) {
+            const aScore = playerA.colors.reduce((sum, color) => color === 'w' ? sum + 1 : sum - 1, 0);
+            const bScore = playerB.colors.reduce((sum, color) => color === 'w' ? sum + 1 : sum - 1, 0);
+            if (
+                playerB.colors.slice(-2).join('') === 'bb' ||
+                playerA.colors.slice(-2).join('') === 'ww' ||
+                (playerB.colors.slice(-1) === 'b' && playerA.colors.slice(-1) === 'w') ||
+                bScore < aScore
+            ) {
+                [playerA, playerB] = [playerB, playerA];
+            }
+        }
         matches.push({
             round: round,
             match: match++,
-            player1: playerArray.find(p => p.index === indexA).id,
-            player2: playerArray.find(p => p.index === indexB).id
+            player1: playerA.id,
+            player2: playerB.id
         });
     } while (playerCopy.length > blossomPairs.reduce((sum, idx) => idx === -1 ? sum + 1 : sum, 0));
     byeArray = [...byeArray, ...playerCopy];
