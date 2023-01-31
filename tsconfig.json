@@ -9,6 +9,7 @@
         "outDir": "./dist",
         "allowJs": true,
         "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
         "declaration": true,
         "sourceMap": true
     }
