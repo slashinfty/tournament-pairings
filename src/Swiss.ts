@@ -1,4 +1,4 @@
-import blossom from 'edmonds-blossom';
+import blossom from 'edmonds-blossom-fixed';
 import { Match } from './Match.js';
 import { shuffle } from './Shuffle.js';
 
