@@ -106,22 +106,22 @@ describe('Single Elimination', () => {
             {
                 round: 1,
                 match: 1,
-                player1: 9,
-                player2: 8,
+                player1: 8,
+                player2: 9,
                 win: { round: 2, match: 1 }
             },
             {
                 round: 1,
                 match: 2,
-                player1: 10,
-                player2: 7,
+                player1: 7,
+                player2: 10,
                 win: { round: 2, match: 3 }
             },
             {
                 round: 1,
                 match: 3,
-                player1: 11,
-                player2: 6,
+                player1: 6,
+                player2: 11,
                 win: { round: 2, match: 4 }
             },
             {
@@ -175,51 +175,51 @@ describe('Single Elimination', () => {
             {
                 round: 1,
                 match: 1,
-                player1: 9,
-                player2: 8,
+                player1: 8,
+                player2: 9,
                 win: { round: 2, match: 1 }
             },
             {
                 round: 1,
                 match: 2,
-                player1: 10,
-                player2: 7,
-                win: { round: 2, match: 3 }
+                player1: 4,
+                player2: 13,
+                win: { round: 2, match: 2 }
             },
             {
                 round: 1,
                 match: 3,
-                player1: 11,
-                player2: 6,
-                win: { round: 2, match: 4 }
+                player1: 5,
+                player2: 12,
+                win: { round: 2, match: 2 }
             },
             {
                 round: 1,
                 match: 4,
-                player1: 12,
-                player2: 5,
-                win: { round: 2, match: 2 }
+                player1: 2,
+                player2: 15,
+                win: { round: 2, match: 3 }
             },
             {
                 round: 1,
                 match: 5,
-                player1: 13,
-                player2: 4,
-                win: { round: 2, match: 2 }
+                player1: 7,
+                player2: 10,
+                win: { round: 2, match: 3 }
             },
             {
                 round: 1,
                 match: 6,
-                player1: 14,
-                player2: 3,
+                player1: 3,
+                player2: 14,
                 win: { round: 2, match: 4 }
             },
             {
                 round: 1,
                 match: 7,
-                player1: 15,
-                player2: 2,
-                win: { round: 2, match: 3 }
+                player1: 6,
+                player2: 11,
+                win: { round: 2, match: 4 }
             },
             {
                 round: 2,

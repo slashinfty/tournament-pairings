@@ -57,20 +57,32 @@ export function SingleElimination(players: number | string[], startingRound: num
         m.player2 = playerArray[bracket[2 * i + 1] - 1];
     });
     if (remainder !== 0) {
-        matches.filter(m => m.round === startingRound).forEach((m, i) => {
-            m.player1 = playerArray[2 ** Math.floor(exponent) + i];
-            const p2 = playerArray[2 ** Math.floor(exponent) - i - 1];
-            const nextMatch = matches.filter(n => n.round === startingRound + 1).find(n => n.player1 === p2 || n.player2 === p2);
-            if (nextMatch.player1 === p2) {
-                nextMatch.player1 = null;
-            } else {
-                nextMatch.player2 = null;
+        const initialRound = matches.filter(m => m.round === startingRound);
+        let counter = 0;
+        matches.filter(m => m.round === startingRound + 1).forEach((m, i) => {
+            const [index1, index2] = [playerArray.indexOf(m.player1), playerArray.indexOf(m.player2)];
+            if (index1 >= Math.pow(2, Math.floor(exponent)) - remainder) {
+                const initialMatch = initialRound[counter];
+                initialMatch.player1 = m.player1;
+                initialMatch.player2 = playerArray[Math.pow(2, Math.ceil(exponent)) - index1 - 1];
+                initialMatch.win = {
+                    round: startingRound + 1,
+                    match: m.match
+                }
+                m.player1 = null;
+                counter++;
             }
-            m.player2 = p2;
-            m.win = {
-                round: startingRound + 1,
-                match: nextMatch.match
-            };
+            if (index2 >= Math.pow(2, Math.floor(exponent)) - remainder) {
+                const initialMatch = initialRound[counter];
+                initialMatch.player1 = m.player2;
+                initialMatch.player2 = playerArray[Math.pow(2, Math.ceil(exponent)) - index2 - 1];
+                initialMatch.win = {
+                    round: startingRound + 1,
+                    match: m.match
+                }
+                m.player2 = null;
+                counter++;
+            }
         });
     }
     if (consolation) {
