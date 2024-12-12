@@ -8,11 +8,11 @@ interface Player {
     pairedUpDown?: boolean,
     receivedBye? : boolean,
     avoid?: Array<string | number>,
-    colors?: Array<'w' | 'b'>,
+    seating?: Array<-1 | 1>,
     rating?: number | null
 }
 
-export function Swiss(players: Player[], round: number, rated: boolean = false, colors: boolean = false) : Match[] {
+export function Swiss(players: Player[], round: number, rated: boolean = false, seating: boolean = false) : Match[] {
     const matches = [];
     let playerArray = [];
     if (Array.isArray(players)) {
@@ -23,8 +23,8 @@ export function Swiss(players: Player[], round: number, rated: boolean = false, 
     if (rated) {
         playerArray.filter(p => !p.hasOwnProperty('rating') || p.rating === null).forEach(p => p.rating = 0);
     }
-    if (colors) {
-        playerArray.filter(p => !p.hasOwnProperty('colors')).forEach(p => p.colors = []);
+    if (seating) {
+        playerArray.filter(p => !p.hasOwnProperty('seating')).forEach(p => p.seating = []);
     }
     playerArray = shuffle(playerArray);
     playerArray.forEach((p, i) => p.index = i);
@@ -55,21 +55,21 @@ export function Swiss(players: Player[], round: number, rated: boolean = false, 
             if (rated) {
                 wt += (Math.log2(sorted.length) - Math.log2(sorted.findIndex(p => p.id === opp.id) + 1)) / 3;
             }
-            if (colors) {
-                const colorScore = curr.colors.reduce((sum, color) => color === 'w' ? sum + 1 : sum - 1, 0);
-                const oppScore = opp.colors.reduce((sum, color) => color === 'w' ? sum + 1 : sum - 1, 0);
-                if (curr.colors.length > 1 && curr.colors.slice(-2).join('') === 'ww') {
-                     if (opp.colors.slice(-2).join('') === 'ww') {
+            if (seating) {
+                const colorScore = curr.seating.reduce((sum: number, seat: number) => sum + seat, 0);
+                const oppScore = opp.seating.reduce((sum: number, seat: number) => sum + seat, 0);
+                if (curr.colors.length > 1 && JSON.stringify(curr.seating.slice(-2)) === '[1,1]') {
+                     if (JSON.stringify(opp.seating.slice(-2)) === '[1,1]') {
                         continue;
-                     } else if (opp.colors.slice(-2).join('') === 'bb') {
+                     } else if (JSON.stringify(opp.seating.slice(-2)) === '[-1,-1]') {
                         wt += 7;
                      } else {
                         wt += 2 / Math.log(4 - Math.abs(oppScore));
                      }
-                } else if (curr.colors.length > 1 && curr.colors.slice(-2).join('') === 'bb') {
-                    if (opp.colors.slice(-2).join('') === 'bb') {
+                } else if (curr.colors.length > 1 && JSON.stringify(curr.seating.slice(-2)) === '[-1,-1]') {
+                    if (JSON.stringify(opp.seating.slice(-2)) === '[-1,-1]') {
                         continue;
-                     } else if (opp.colors.slice(-2).join('') === 'ww') {
+                     } else if (JSON.stringify(opp.seating.slice(-2)) === '[1,1]') {
                         wt += 8;
                      } else {
                         wt += 2 / Math.log(4 - Math.abs(oppScore));
@@ -99,13 +99,13 @@ export function Swiss(players: Player[], round: number, rated: boolean = false, 
         playerCopy.splice(playerCopy.findIndex(p => p.index === indexB), 1);
         let playerA = playerArray.find(p => p.index === indexA);
         let playerB = playerArray.find(p => p.index === indexB);
-        if (colors) {
-            const aScore = playerA.colors.reduce((sum, color) => color === 'w' ? sum + 1 : sum - 1, 0);
-            const bScore = playerB.colors.reduce((sum, color) => color === 'w' ? sum + 1 : sum - 1, 0);
+        if (seating) {
+            const aScore = playerA.seating.reduce((sum: number, seat: number) => sum + seat, 0);
+            const bScore = playerB.seating.reduce((sum: number, seat: number) => sum + seat, 0);
             if (
-                playerB.colors.slice(-2).join('') === 'bb' ||
-                playerA.colors.slice(-2).join('') === 'ww' ||
-                (playerB.colors.slice(-1) === 'b' && playerA.colors.slice(-1) === 'w') ||
+                JSON.stringify(playerB.seating.slice(-2)) === '[-1,-1]' ||
+                JSON.stringify(playerA.seating.slice(-2)) === '[1,1]' ||
+                (playerB.seating.slice(-1) === -1 && playerA.seating.slice(-1) === 1) ||
                 bScore < aScore
             ) {
                 [playerA, playerB] = [playerB, playerA];
@@ -117,7 +117,7 @@ export function Swiss(players: Player[], round: number, rated: boolean = false, 
             player1: playerA.id,
             player2: playerB.id
         });
-    } while (playerCopy.length > blossomPairs.reduce((sum, idx) => idx === -1 ? sum + 1 : sum, 0));
+    } while (playerCopy.length > blossomPairs.reduce((sum: number, idx: number) => idx === -1 ? sum + 1 : sum, 0));
     byeArray = [...byeArray, ...playerCopy];
     for (let i = 0; i < byeArray.length; i++) {
         matches.push({
