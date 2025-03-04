@@ -1,7 +1,11 @@
 {
     "name": "tournament-pairings",
-    "version": "1.6.0",
+    "version": "1.7.0",
     "description": "Functions to generate pairings for tournaments ",
+    "exports": {
+        ".": "./dist/index.js",
+        "./interfaces": "./dist/interfaces.js"
+    },
     "main": "./dist/index.js",
     "files": [
         "dist/**/*"
