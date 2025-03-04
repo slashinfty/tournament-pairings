@@ -2,7 +2,7 @@ import blossom from 'edmonds-blossom-fixed';
 import { Match } from './Match.js';
 import { shuffle } from './Shuffle.js';
 
-interface Player {
+export interface Player {
     id: string | number,
     score: number,
     pairedUpDown?: boolean,

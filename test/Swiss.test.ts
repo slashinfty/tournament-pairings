@@ -1,9 +1,9 @@
 import { expect } from 'chai';
-import { Swiss } from '../src/Swiss';
+import { Player, Swiss } from '../src/Swiss';
 
 describe('Swiss', () => {
     it('9 players in round 1 yields 1 bye', () => {
-        const players = [
+        const players:Player[] = [
             {
                 id: 'A',
                 score: 0
