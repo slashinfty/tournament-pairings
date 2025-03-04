@@ -39,6 +39,15 @@ You can also import them all.
 import * as Pairings from 'tournament-pairings';
 ```
 
+Additionally, a couple interfaces are available for TypeScript users.
+
+```js
+import {
+    Match,
+    Player
+} from 'tournament-pairings/interfaces';
+```
+
 ### Parameters
 
 `SingleElimination()` has four parameters:

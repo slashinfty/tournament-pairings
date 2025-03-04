@@ -6,7 +6,6 @@
         ".": "./dist/index.js",
         "./interfaces": "./dist/interfaces.js"
     },
-    "main": "./dist/index.js",
     "files": [
         "dist/**/*"
     ],
