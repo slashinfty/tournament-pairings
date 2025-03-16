@@ -10,6 +10,12 @@ Round-robin: players are paired via [Berger tables](https://en.wikipedia.org/wik
 
 Swiss: generated using a weighted [blossom algorithm](https://brilliant.org/wiki/blossom-algorithm/) with maximum cardinality.
 
+### Swiss Pairings
+- Players are preferred to play against other players with equal point totals
+- If there are an odd number of players, players with the lowest point total who have not previously received a bye are preferred to receive the bye
+- If the tournament is rated, players are preferred to play other players with similar ratings
+- If the seating in a tournament is relevant, such as white and black in chess, players are preferred to play the opposite seat than last played and strongly preferred to not play the same seat more than two times consecutively
+
 ## Requirements
 This is an ESM module. You will need to use `import` instead of `require` and add `type: "module"` to your `package.json`. See [this](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c) for more information.
 

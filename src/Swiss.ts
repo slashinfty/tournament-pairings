@@ -46,40 +46,27 @@ export function Swiss(players: Player[], round: number, rated: boolean = false, 
             if (curr.hasOwnProperty('avoid') && curr.avoid.includes(opp.id)) {
                 continue;
             }
-            let wt = 14 * Math.log10(scoreSums.findIndex(s => s === curr.score + opp.score) + 1);
-            const scoreGroupDiff = Math.abs(scoreGroups.findIndex(s => s === curr.score) - scoreGroups.findIndex(s => s === opp.score));
-            wt += scoreGroupDiff < 2 ? 3 / Math.log10(scoreGroupDiff + 2) : 1 / Math.log10(scoreGroupDiff + 2);
+            let wt = 75 - 75 / (scoreGroups.findIndex(s => s === Math.min(curr.score, opp.score)) + 2);
+            wt += 5 - 5 / (scoreSums.findIndex(s => s === curr.score + opp.score) + 1);
+            let scoreGroupDiff = Math.abs(scoreGroups.findIndex(s => s === curr.score) - scoreGroups.findIndex(s => s === opp.score));
             if (scoreGroupDiff === 1 && curr.hasOwnProperty('pairedUpDown') && curr.pairedUpDown === false && opp.hasOwnProperty('pairedUpDown') && opp.pairedUpDown === false) {
-                wt += 1.2;
+                scoreGroupDiff -= 0.65;
+            } else if (scoreGroupDiff > 0 && ((curr.hasOwnProperty('pairedUpDown') && curr.pairedUpDown === true) || (opp.hasOwnProperty('pairedUpDown') && opp.pairedUpDown === true))) {
+                scoreGroupDiff += 0.2;
             }
+            wt += 23 / (2 *(scoreGroupDiff + 2));
             if (rated) {
-                wt += (Math.log2(sorted.length) - Math.log2(sorted.findIndex(p => p.id === opp.id) + 1)) / 3;
+                wt += 4 / (sorted.findIndex(p => p.id === opp.id) + 2);
             }
             if (seating) {
-                const colorScore = curr.seating.reduce((sum: number, seat: number) => sum + seat, 0);
-                const oppScore = opp.seating.reduce((sum: number, seat: number) => sum + seat, 0);
-                if (curr.colors.length > 1 && JSON.stringify(curr.seating.slice(-2)) === '[1,1]') {
-                     if (JSON.stringify(opp.seating.slice(-2)) === '[1,1]') {
-                        continue;
-                     } else if (JSON.stringify(opp.seating.slice(-2)) === '[-1,-1]') {
-                        wt += 7;
-                     } else {
-                        wt += 2 / Math.log(4 - Math.abs(oppScore));
-                     }
-                } else if (curr.colors.length > 1 && JSON.stringify(curr.seating.slice(-2)) === '[-1,-1]') {
-                    if (JSON.stringify(opp.seating.slice(-2)) === '[-1,-1]') {
-                        continue;
-                     } else if (JSON.stringify(opp.seating.slice(-2)) === '[1,1]') {
-                        wt += 8;
-                     } else {
-                        wt += 2 / Math.log(4 - Math.abs(oppScore));
-                     } 
-                } else {
-                    wt += 5 / (4 * Math.log10(6 - Math.abs(colorScore - oppScore)));
+                let seatingDiff = Math.abs(curr.seating.reduce((sum, seat) => sum + seat, 0) - opp.seating.reduce((sum, seat) => sum + seat, 0));
+                if (curr.seating.slice(-1)[0] !== opp.seating.slice(-1)[0]) {
+                    seatingDiff += 0.5;
                 }
+                wt += Math.pow(2, seatingDiff - 1);
             }
             if ((curr.hasOwnProperty('receivedBye') && curr.receivedBye) || (opp.hasOwnProperty('receivedBye') && opp.receivedBye)) {
-                wt *= 1.5;
+                wt += 40;
             }
             pairs.push([curr.index, opp.index, wt]);
         }
@@ -105,7 +92,7 @@ export function Swiss(players: Player[], round: number, rated: boolean = false, 
             if (
                 JSON.stringify(playerB.seating.slice(-2)) === '[-1,-1]' ||
                 JSON.stringify(playerA.seating.slice(-2)) === '[1,1]' ||
-                (playerB.seating.slice(-1) === -1 && playerA.seating.slice(-1) === 1) ||
+                (playerB.seating.slice(-1)[0] === -1 && playerA.seating.slice(-1)[0] === 1) ||
                 bScore < aScore
             ) {
                 [playerA, playerB] = [playerB, playerA];
