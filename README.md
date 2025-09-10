@@ -142,19 +142,20 @@ Player {
 Each function returns an `Array<Match>`.
 ```ts
 Match {
-    round: number,
-    match: number,
-    player1: string | number | null,
-    player2: string | number | null,
+    round: Number,
+    match: Number,
+    player1: String | Number | null,
+    player2: String | Number | null,
     win?: {
-        round: number,
-        match: number
+        round: Number,
+        match: Number
     },
     loss?: {
-        round: number,
-        match: number
+        round: Number,
+        match: Number
     }
 }
 ```
 
 The Swiss function returns matches for the given round, while all other functions return matches for the entire tournament.
+
