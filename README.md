@@ -1,4 +1,4 @@
-# tournament-pairings
+# Tournament Pairings
 Node.js package containing functions to generate tournament pairings.
 
 If you want a full-fledged package for organizing tournaments, consider [`tournament-organizer`](https://github.com/slashinfty/tournament-organizer).
@@ -17,18 +17,22 @@ Swiss: generated using a weighted [blossom algorithm](https://brilliant.org/wiki
 - If the seating in a tournament is relevant, such as white and black in chess, players are preferred to play the opposite seat than last played and strongly preferred to not play the same seat more than two times consecutively
 
 ## Requirements
-This is an ESM module. You will need to use `import` instead of `require` and add `type: "module"` to your `package.json`. See [this](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c) for more information.
+This is an ESM module. You will need to use `import` instead of `require` and add `type: "module"` to your `package.json`.
+
+## Discussion
+
+You can discuss this repository more in my [Discord](https://discord.gg/N6Rcd7UF7d).
+
+# Documentation
 
 ## Installation
 ```
 npm i tournament-pairings
 ```
 
-## Documentation
+## Importing
 
-### Imports
-There are 5 named exports you can import into your project.
-
+Named imports:
 ```js
 import {
     SingleElimination,
@@ -36,172 +40,121 @@ import {
     RoundRobin,
     Stepladder,
     Swiss
-} from 'tournament-pairings';
+} from 'tournament-pairings'
 ```
 
-You can also import them all.
-
+Namespace import:
 ```js
-import * as Pairings from 'tournament-pairings';
+import * as Pairings from 'tournament-pairings'
 ```
 
-Additionally, a couple interfaces are available for TypeScript users.
-
+Interfaces for TypeScript:
 ```js
 import {
     Match,
     Player
-} from 'tournament-pairings/interfaces';
+} from 'tournament-pairings/interfaces'
 ```
 
-### Parameters
+## Functions
 
-`SingleElimination()` has four parameters:
-
-- `players`: either a number of players or an array of unique strings or numbers representing players
-- `startingRound` (optional): an integer indicating the starting round (default: 1)
-- `consolation` (optional): a boolean to determine if a third place match should be created (default: false)
-- `ordered` (optional): a boolean to indicate if the array provided for `players` is ordered (default: false)
-
-`DoubleElimination()` and `RoundRobin()` have three parameters:
-
-- `players`: either a number of players or an array of unique strings or numbers representing players
-- `startingRound` (optional): an integer indicating the starting round (default: 1)
-- `ordered` (optional): a boolean to indicate if the array provided for `players` is ordered (default: false)
-
-`Stepladder()` has three parameters:
-
-- `players`: either a number of players or an array of unique strings or numbers representing players
-- `startingRound` (optional): an integer indicating the starting round (default: 1)
-- `ordered` (optional): a boolean to indicate if the array provided for `players` is ordered (default: true)
-
-`Swiss()` has four parameters:
-
-- `players`: an array of objects with the following structure
+Single elimination:
 ```ts
-{
-    id: String | Number, // unique identifier
-    score: Number, // current score
-    pairedUpDown?: Boolean, // if the player has been paired up/down prior (optional)
-    receivedBye? : Boolean, // if the player has received a bye prior (optional)
-    avoid?: Array<String | Number>, // array of IDs the player can not be paired with (optional)
-    seating?: Array<1 | -1>, // array of seats player has been assigned (often used for chess) (optional)
-    rating?: Number | null // rating of the player (optional)
+SingleElimination(
+    players: Number | Array<String>,
+    startingRound: Number = 1,
+    consolation: Boolean = false,
+    ordered: Boolean = false
+): Array<Match>
+```
+
+Double elimination:
+```ts
+DoubleElimination(
+    players: Number | Array<String>,
+    startingRound: Number = 1,
+    ordered: Boolean = false
+): Array<Match>
+```
+
+Round-robin:
+```ts
+RoundRobin(
+    players: Number | Array<String>,
+    startingRound: Number = 1,
+    ordered: Boolean = false
+): Array<Match>
+```
+
+Stepladder:
+```ts
+Stepladder(
+    players: Number | Array<String>,
+    startingRound: Number = 1,
+    ordered: Boolean = true
+): Array<Match>
+```
+
+Swiss:
+```ts
+Swiss(
+    players: Array<Player>,
+    round: Number,
+    rated: Boolean = false,
+    seating: Boolean = false
+): Array<Match>
+
+Player {
+    id: String | Number,
+    score: Number,
+    pairedUpDown?: Boolean,
+    receivedBye? : Boolean,
+    avoid?: Array<String | Number>,
+    seating?: Array<-1 | 1>,
+    rating?: Number | null
 }
 ```
-- `round`: the round number
-- `rated` (optional): a boolean to indicate if the players have a rating that should be considered when pairing (default: false)
-- `seating` (optional): a boolean to indicate if the seating of the players needs to be considered (default: false)
 
-### Returns
-Each function returns an array of matches. Matches are objects with the following structure:
+### Notes on Parameters
 
+`players`: if provided a number *n* (except for Swiss), then players are array of numbers from 1 to *n*.
+
+`consolation`: if there is an additional match in the final round to determine third place.
+
+`ordered`: if the array provided for players is ordered.
+
+`rated`: if the players have a rating to be considered for pairing.
+
+`seating`: if the seating of the players needs to be considered.
+
+### Notes on `Player` Interface
+
+`pairedUpDown`: if the player has been paired with someone outside their point group in a prior round.
+
+`receivedBye`: if the player was unpaired in a prior round.
+
+`avoid`: an array of IDs representing prior opponents of the player.
+
+`seating`: an array of either 1 or -1 to represent seating. The most obvious example is playing white or black in chess.
+
+## Return Value
+
+Each function returns an `Array<Match>`.
 ```ts
-{
-    round: Number,
-    match: Number,
-    player1: String | Number | null,
-    player2: String | Number | null,
-    // the following objects are only present in elimination pairings
+Match {
+    round: number,
+    match: number,
+    player1: string | number | null,
+    player2: string | number | null,
     win?: {
-        round: Number,
-        match: Number
+        round: number,
+        match: number
     },
     loss?: {
-        round: Number,
-        match: Number
+        round: number,
+        match: number
     }
 }
 ```
-For Swiss pairings, if `seating = true`, then `player1` would be seat 1 and `player2` would be seat 2.
 
-The Swiss function returns matches for one round, while single/double elimination and round-robin functions return all matches for the tournament.
-
-## Examples
-Creating a generic single elimination bracket for 8 players with a third place match:
-```js
-import { SingleElimination } from 'tournament-pairings';
-
-const elimBracket = SingleElimination(8, 1, true);
-
-console.log(elimBracket);
-/*
-Expected output:
-[
-  {
-    round: 1,
-    match: 1,
-    player1: 1,
-    player2: 8,
-    win: { round: 2, match: 1 }
-  },
-  {
-    round: 1,
-    match: 2,
-    player1: 4,
-    player2: 5,
-    win: { round: 2, match: 1 }
-  },
-  {
-    round: 1,
-    match: 3,
-    player1: 2,
-    player2: 7,
-    win: { round: 2, match: 2 }
-  },
-  {
-    round: 1,
-    match: 4,
-    player1: 3,
-    player2: 6,
-    win: { round: 2, match: 2 }
-  },
-  {
-    round: 2,
-    match: 1,
-    player1: null,
-    player2: null,
-    win: { round: 3, match: 1 },
-    loss: { round: 3, match: 2 }
-  },
-  {
-    round: 2,
-    match: 2,
-    player1: null,
-    player2: null,
-    win: { round: 3, match: 1 },
-    loss: { round: 3, match: 2 }
-  },
-  { round: 3, match: 1, player1: null, player2: null },
-  { round: 3, match: 2, player1: null, player2: null }
-]
-*/
-```
-
-Creating round-robin pairings for the Teenage Mutant Ninja Turtles:
-```js
-import { RoundRobin } from 'tournament-pairings';
-
-const pairings = RoundRobin([
-    'Leonardo',
-    'Raphael',
-    'Donatello',
-    'Michelangelo'
-]);
-console.log(pairings);
-/*
-Expected output:
-[
-  { round: 1, match: 1, player1: 'Donatello', player2: 'Michelangelo' },
-  { round: 1, match: 2, player1: 'Leonardo', player2: 'Raphael' },
-  { round: 2, match: 1, player1: 'Michelangelo', player2: 'Raphael' },
-  { round: 2, match: 2, player1: 'Donatello', player2: 'Leonardo' },
-  { round: 3, match: 1, player1: 'Leonardo', player2: 'Michelangelo' },
-  { round: 3, match: 2, player1: 'Raphael', player2: 'Donatello' }
-]
-*/
-```
-
-## Discussion
-
-You can discuss this repository more in my [Discord](https://discord.gg/Q8t9gcZ77s).
+The Swiss function returns matches for the given round, while all other functions return matches for the entire tournament.
