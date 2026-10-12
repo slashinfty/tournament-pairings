@@ -3,6 +3,8 @@ Node.js package containing functions to generate tournament pairings.
 
 If you want a full-fledged package for organizing tournaments, consider [`tournament-organizer`](https://github.com/slashinfty/tournament-organizer).
 
+If you want a web-based tournament manager, check out [Apothem](https://apothem-sk.com/).
+
 ## Algorithms
 Double elimination: avoids rematches in the loser's bracket by [alternating](https://miro.medium.com/max/1400/1*p9OYmhVdnAAMiHo_OM4PjQ.png) how matches are routed.
 
